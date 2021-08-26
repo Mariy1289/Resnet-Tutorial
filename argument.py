@@ -7,6 +7,5 @@ def parse_args():
     parser.add_argument('-ss', '--step_size', type=int, default=30)
     parser.add_argument('--model', type=str, default='resnet18', choices=['lenet','resnet18'])
     parser.add_argument('--inference', type=str, default=False)
-    parser.add_argument('--save_weight', type=str, default='False')
+    parser.add_argument('--save_weight', type=str, default=False)
     return parser.parse_args()
-    
