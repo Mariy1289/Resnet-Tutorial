@@ -14,6 +14,7 @@ import time
 from distutils.util import strtobool
 from argument import  parse_args
 from model.resnet import resnet18
+from retraning import freez_param
 import datetime
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
