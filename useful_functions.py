@@ -29,4 +29,3 @@ def tensor_to_fig(input,output):
     plt.figure()
     plt.scatter(input.cpu().numpy(),output.cpu().numpy())
     plt.savefig("{}.png".format(datetime.datetime.now().strftime("%y%m%d_%H%M%S")))
-
