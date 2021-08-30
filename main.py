@@ -62,19 +62,18 @@ def main():
     testloader = torch.utils.data.DataLoader(testset, batch_size=batch_size_test,
                                             shuffle=False, num_workers=2)
 
-    classes = ('plane', 'car', 'bird', 'cat',
-            'deer', 'dog', 'frog', 'horse', 'ship', 'truck')
-    num_classes = len(classes)
+    # classes = ('plane', 'car', 'bird', 'cat',
+    #         'deer', 'dog', 'frog', 'horse', 'ship', 'truck')
+    # num_classes = len(classes)
 
    
     net,saved_path = model_choice() 
     if args.inference :
         net.load_state_dict(torch.load(saved_path))
+        print(f'load weight success')
 
 
     net.to(device)
-    # if args.inference :
-    #     inference(net,testloader, num_shown_images,classes,num_classes)
     
     train(net,study_name,trainloader,testloader)
 

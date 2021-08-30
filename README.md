@@ -9,7 +9,7 @@ torchvision のコードから引用
 ``python 3 main.py --model resnet18 --inference True --save_weight True 
 `` 
 - model : resnet18 
-- inference : Trueの時は重みをロードして学習。Falseではスクラッチから学習
+- load : Trueの時は重みをロードして学習。Falseではスクラッチから学習
 - save_weight :　True時に重みを保存。デバック時に軽くするために追加したオプション。
 - lr : learning rate . inferenceTrueの際には、lrを下げた方が早い。
 
