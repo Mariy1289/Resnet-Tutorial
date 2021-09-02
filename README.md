@@ -6,7 +6,7 @@ torchvision のコードから引用
 - ``self.conv1 = nn.Conv2d(3, self.inplanes, kernel_size=3, stride=1, padding=1,bias=False)``
 
 ### 実行方法
-``python 3 main.py --model resnet18 --inference True --save_weight True 
+``python 3 main.py --model resnet18 --load True --save_weight True 
 `` 
 - model : resnet18 
 - load : Trueの時は重みをロードして学習。Falseではスクラッチから学習

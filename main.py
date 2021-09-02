@@ -66,9 +66,8 @@ def main():
     #         'deer', 'dog', 'frog', 'horse', 'ship', 'truck')
     # num_classes = len(classes)
 
-   
     net,saved_path = model_choice() 
-    if args.inference :
+    if args.load:
         net.load_state_dict(torch.load(saved_path))
         print(f'load weight success')
 
