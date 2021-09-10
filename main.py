@@ -14,7 +14,8 @@ import time
 from distutils.util import strtobool
 from argument import  parse_args
 from model.resnet import resnet18
-from retraning import freez_param
+from model.lenet import LeNet
+# from retraning import freez_param
 import datetime
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
@@ -28,6 +29,9 @@ def model_choice ():
         net = resnet18()
         # saved_path = 'ここにパスを指定/_best.pth'
         saved_path = 'weights/resnet18-210819_223705/_best.pth'
+    if args.model =='lenet':
+        net = LeNet()
+        saved_path =  'weights/93/lenet99_best.pth'
     return net, saved_path
 
 def main():
@@ -129,6 +133,7 @@ def train(net,study_name,trainloader,testloader):
                     (epoch + 1, i + 1, running_loss, train_acc))
 
                 gstep = epoch * len(trainloader) + i
+                #fixme : tensor boardでは横軸に小数を取ってくるのができない（？）ため、横軸にgstepを持ってきています。
                 writer.add_scalar('Training/Loss', running_loss, gstep)
                 writer.add_scalar('Training/Accuracy', train_acc, gstep)
 
@@ -145,13 +150,15 @@ def train(net,study_name,trainloader,testloader):
                 (epoch + 1, test_acc))
 
         writer.add_scalar('Test/Accuracy', test_acc, epoch+1)
+        writer.add_scalar('Training/LearningRate', optimizer.param_groups[0]['lr'], epoch+1)
+
         util.add_param(writer, net, epoch+1 )
         end_time = time.time()
         print('{:.1f}'.format(end_time-start_time))
 
         is_best = (test_acc > acc_max) 
         if is_best:
-            if strtobool(args.save_weight):
+            if args.save_weight:
                 acc_max = max(acc_max, test_acc)                
                 save_weight_path = util.save_weight(net,basename)
                 print('saved best weight:  %s'%save_weight_path)
