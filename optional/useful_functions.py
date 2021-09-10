@@ -3,6 +3,33 @@ import matplotlib.pyplot as plt
 import datetime 
 import math
 
+# importing files 
+# import sys
+# import csv
+# sys.path.append('../')
+# from fn.set_fn import set_layer_fn
+# from argument import parse_args
+
+import os 
+import csv
+def save_to_csv(path):
+    #write
+    os.makedirs(path, exist_ok=True)
+    with open('{}.csv'.format(path), 'w') as f:
+        writer0 = csv.writer(f)
+        writer0.writerow('weightlist')
+        writer0.writerow('encodelist')
+        writer0.writerow('fc')
+    print("#### finish ####")
+    
+    #read
+    with open('model/fn_param/{}.csv'.format(path)) as f:
+        reader = csv.reader(f)
+        weightlist = []
+        for row in reader :
+            weightlist.append(row)
+
+
 #Conv2d内の重みを固定する関数
 def freez_param (model):
     for m in model.modules():
@@ -15,6 +42,9 @@ def get_std(mytensor):
     fn = round(-math.log2(std_w))
     return fn
 
+
+#注意：　getと言いつつも、意外と重い関数です。
+# nn.Conv2dでself. として設定した任意のパラメータをとってくることができます。
 def get_param(model):
     mylist = []
     for m in model.modules():
