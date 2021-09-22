@@ -5,6 +5,41 @@ import json
 import os 
 
 from argument import parse_args
+import torch.optim as optim
+import sys
+
+
+def get_optimizer(model, optimizer, lr,momentum_):
+    if optimizer == 'sgd':
+        optimizer = optim.SGD(
+            filter(lambda p: p.requires_grad, model.parameters()),
+            lr,
+            momentum = momentum_)
+            # weight_decay=1e-4)
+            # ,weight_decay=5e-4)
+        print("optimizer is SGD")
+    elif optimizer == 'adam':
+        optimizer = optim.Adam(
+            filter(lambda p: p.requires_grad, model.parameters()), lr)
+        print("optimizer is Adam")
+    elif optimizer == 'adamw':
+        optimizer = optim.AdamW(
+            filter(lambda p: p.requires_grad, model.parameters()), lr)
+        print("optimizer is AdamW")
+    elif optimizer == 'rprop':
+        optimizer = optim.Rprop(
+            filter(lambda p: p.requires_grad, model.parameters()), lr)
+        print("optimizer is Rprop")
+    elif optimizer == 'rmsprop':
+        optimizer = optim.RMSprop(
+            filter(lambda p: p.requires_grad, model.parameters()), lr)
+        print("optimizer is RMSprop")
+    else:
+        print("#### unknown optimizer ####")
+        sys.exit()
+    return optimizer
+
+
 
 def save_weight(model,basename):
     args = parse_args()

@@ -17,22 +17,31 @@ from model.resnet import resnet18
 from model.lenet import LeNet
 # from retraning import freez_param
 import datetime
-device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-
+from model.mlp_mixier.mlp_mixier_pytorch import MLPMixer
 
 
 def model_choice ():
     args = parse_args()
     saved_path = ''
     if args.model =='resnet18':
-        # net = resnet_model()
-        net = resnet18()
+        # model= resnet_model()
+        model = resnet18()
         # saved_path = 'ここにパスを指定/_best.pth'
         saved_path = 'weights/resnet18-210819_223705/_best.pth'
     if args.model =='lenet':
-        net = LeNet()
+        model = LeNet()
         saved_path =  'weights/93/lenet99_best.pth'
-    return net, saved_path
+
+    if args.model =='mixier':
+        model = MLPMixer(
+            image_size = 32,
+            channels = 3,
+            patch_size = 2,#16 for imagenet 
+            dim = 120,
+            depth = 12,
+            num_classes = 10
+        )
+    return model, saved_path
 
 def main():
     args = parse_args()
@@ -76,7 +85,7 @@ def main():
         print(f'load weight success')
 
 
-    net.to(device)
+    net.to(args.device)
     
     train(net,study_name,trainloader,testloader)
 
@@ -89,14 +98,16 @@ def main():
 
 def train(net,study_name,trainloader,testloader):
     args = parse_args()
+    device = args.device 
     # date_str = datetime.datetime.now().strftime("%y%m%d-%H%M%S")
     # basename = "%s-%s" % (study_name, date_str)
     basename = "%s-%s" %(args.model,study_name)
     
     print("Starting training for '%s'" % basename)
    
-    optimizer = optim.Adam(net.parameters(), lr=args.lr)
-    scheduler = optim.lr_scheduler.StepLR(optimizer, args.step_size, gamma=0.1)
+    # optimizer = optim.Adam(net.parameters(), lr=args.lr)
+    optimizer = util.get_optimizer(net, args.optimizer, args.lr,args.momentum)
+    scheduler = optim.lr_scheduler.StepLR(optimizer, args.step_size, gamma=args.gamma)
 
     dataiter = iter(trainloader)
     images, _ = dataiter.next()
