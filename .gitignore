@@ -3,3 +3,4 @@ model/__pycache__
 runs/
 weights/
 saved_models/
+mlp_mixier/__pycache__

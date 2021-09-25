@@ -15,6 +15,7 @@ from distutils.util import strtobool
 from argument import  parse_args
 from model.resnet import resnet18
 from model.lenet import LeNet
+from model.resmlp import ResMLP
 # from retraning import freez_param
 import datetime
 from model.mlp_mixier.mlp_mixier_pytorch import MLPMixer
@@ -36,11 +37,14 @@ def model_choice ():
         model = MLPMixer(
             image_size = 32,
             channels = 3,
-            patch_size = 2,#16 for imagenet 
-            dim = 120,
-            depth = 12,
+            patch_size = 4,#16 for imagenet 
+            dim = 64,#パッチ切り出しした後のnn.linearの出力がdim 
+            depth = 9,#num_layer = 2*depth +2  9 
             num_classes = 10
         )
+    if args.model =='resmlp':
+        model = ResMLP(in_channels=3, image_size=32, patch_size=4, num_classes=10,
+                dim=384, depth=12, mlp_dim=384*4)
     return model, saved_path
 
 def main():

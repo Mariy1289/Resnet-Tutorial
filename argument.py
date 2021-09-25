@@ -9,7 +9,7 @@ def parse_args():
     parser.add_argument( '--encode',type=str, default=False)
     parser.add_argument( '--weightquant','--wk',type=str, default=False)
     parser.add_argument('-ss', '--step_size', type=int, default=30)
-    parser.add_argument('--model', type=str, default='resnet18', choices=['lenet','resnet18','vgg11','mixier'])
+    parser.add_argument('--model', type=str, default='resnet18', choices=['lenet','resnet18','vgg11','mixier','resmlp'])
     parser.add_argument('-opt', '--optimizer',type=str,default='sgd',
                         choices=['sgd', 'adam', 'adamw', 'rprop', 'rmsprop'])
     parser.add_argument('--load', type=str, default=False)

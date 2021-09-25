@@ -10,6 +10,13 @@ import math
 # from fn.set_fn import set_layer_fn
 # from argument import parse_args
 
+
+import numpy as np
+def get_amount_parametes(model): #Trainable Parameters: 15.351M
+    parameters = filter(lambda p: p.requires_grad, model.parameters())
+    parameters = sum([np.prod(p.size()) for p in parameters]) / 1_000_000
+    print('Trainable Parameters: %.3fM' % parameters)
+
 import os 
 import csv
 def save_to_csv(path):
